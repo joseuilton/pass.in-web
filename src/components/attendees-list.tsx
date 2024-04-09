@@ -1,4 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon, ChevronsLeftIcon, ChevronsRightIcon, EllipsisIcon, SearchIcon } from "lucide-react";
+import { IconButton } from "./icon-button";
 
 export function AttendeesList() {
   return (
@@ -78,9 +79,9 @@ export function AttendeesList() {
                   3 dias atrás
                 </td>
                 <td className="py-3 px-4 text-sm text-zinc-200">
-                  <button className="flex items-center justify-center size-7 bg-black/20 border border-zinc-50/10 rounded-md ml-auto">
+                  <IconButton transparent>
                     <EllipsisIcon size={16} />
-                  </button>
+                  </IconButton>
                 </td>
               </tr>
             ))}
@@ -97,34 +98,18 @@ export function AttendeesList() {
                   <p>Página 1 de 11</p>
 
                   <div className="flex items-center gap-1.5">
-                    <button
-                      className="flex items-center justify-center size-7 border 
-                               border-zinc-50/10 bg-zinc-50/5 box-border rounded-md text-white
-                                 disabled:opacity-50"
-                      disabled
-                    >
+                    <IconButton disabled>
                       <ChevronsLeftIcon size={16} />
-                    </button>
-                    <button
-                      className="flex items-center justify-center size-7 border 
-                      border-zinc-50/10 bg-zinc-50/5 box-border rounded-md text-white
-                      disabled:opacity-50"
-                      disabled
-                    >
+                    </IconButton>
+                    <IconButton disabled>
                       <ChevronLeftIcon size={16} />
-                    </button>
-                    <button
-                      className="flex items-center justify-center size-7 border 
-                      border-zinc-50/10 bg-zinc-50/5 box-border rounded-md text-white"
-                    >
+                    </IconButton>
+                    <IconButton>
                       <ChevronRightIcon size={16} />
-                    </button>
-                    <button
-                      className="flex items-center justify-center size-7 border 
-                      border-zinc-50/10 bg-zinc-50/5 box-border rounded-md text-white"
-                    >
+                    </IconButton>
+                    <IconButton>
                       <ChevronsRightIcon size={16} />
-                    </button>
+                    </IconButton>
                   </div>
                 </div>
               </td>
