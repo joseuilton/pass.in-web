@@ -1,11 +1,39 @@
 import { ChevronLeftIcon, ChevronRightIcon, ChevronsLeftIcon, ChevronsRightIcon, EllipsisIcon, SearchIcon } from "lucide-react";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/pt-br";
+
 import { IconButton } from "./icon-button";
 import { Table } from "./table/table";
 import { TableHeading } from "./table/table-heading";
 import { TableCell } from "./table/table-cell";
 import { TableRow } from "./table/table-row";
+import { attendees } from "../data/attendees";
+import { useState } from "react";
+
+dayjs.extend(relativeTime);
+dayjs.locale("pt-br");
 
 export function AttendeesList() {
+  const [page, setPage] = useState(1);
+  const totalPages = Math.ceil(attendees.length / 10);
+
+  function handleGoToFirstPage() {
+    setPage(1);
+  }
+
+  function handleGoToPreviousPage() {
+    setPage((previous) => previous - 1);
+  }
+
+  function handleGoToNextPage() {
+    setPage((previous) => previous + 1);
+  }
+
+  function handleGoToLastPage() {
+    setPage(totalPages);
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-3">
@@ -38,25 +66,17 @@ export function AttendeesList() {
                            focus:ring-orange-400"
               />
             </TableHeading>
-            <TableHeading>
-              Código
-            </TableHeading>
-            <TableHeading>
-              Participante
-            </TableHeading>
-            <TableHeading>
-              Data de inscrição
-            </TableHeading>
-            <TableHeading>
-              Data do check-in
-            </TableHeading>
+            <TableHeading>Código</TableHeading>
+            <TableHeading>Participante</TableHeading>
+            <TableHeading>Data de inscrição</TableHeading>
+            <TableHeading>Data do check-in</TableHeading>
             <TableHeading className="size-7"></TableHeading>
           </tr>
         </thead>
 
         <tbody>
-          {Array.from({ length: 6 }).map((_, i) => (
-            <TableRow key={i}>
+          {attendees.slice((page - 1) * 10, page * 10).map((attendee) => (
+            <TableRow key={attendee.id}>
               <TableCell className="size-4">
                 <input
                   type="checkbox"
@@ -67,19 +87,19 @@ export function AttendeesList() {
                 />
               </TableCell>
               <TableCell>
-                52716
+                {attendee.id}
               </TableCell>
               <TableCell>
                 <div className="flex flex-col gap-1 ">
-                  <span className="text-zinc-50 font-semibold">Diego Schell Fernandes</span>
-                  <span className="text-xs">diego.schell.f@gmail.com</span>
+                  <span className="text-zinc-50 font-semibold">{attendee.name}</span>
+                  <span className="text-xs">{attendee.email}</span>
                 </div>
               </TableCell>
               <TableCell>
-                7 dias atrás
+                {dayjs().locale("pt-br").to(attendee.createdAt)}
               </TableCell>
               <TableCell>
-                3 dias atrás
+                {dayjs().locale("pt-br").to(attendee.checkedInAt)}
               </TableCell>
               <TableCell className="size-7">
                 <IconButton className="ml-auto" transparent>
@@ -94,23 +114,23 @@ export function AttendeesList() {
         <tfoot>
           <tr className="text-sm text-zinc-200">
             <td colSpan={3} className="pl-4">
-              <p>Mostrando 10 de 228 itens</p>
+              <p>Mostrando 10 de {attendees.length} itens</p>
             </td>
             <td colSpan={3} className="py-3 pr-4">
               <div className="flex items-center justify-end gap-8">
-                <p>Página 1 de 11</p>
+                <p>Página {page} de {totalPages}</p>
 
                 <div className="flex items-center gap-1.5">
-                  <IconButton disabled>
+                  <IconButton disabled={page === 1} onClick={handleGoToFirstPage}>
                     <ChevronsLeftIcon size={16} />
                   </IconButton>
-                  <IconButton disabled>
+                  <IconButton disabled={page === 1} onClick={handleGoToPreviousPage}>
                     <ChevronLeftIcon size={16} />
                   </IconButton>
-                  <IconButton>
+                  <IconButton disabled={page === totalPages} onClick={handleGoToNextPage}>
                     <ChevronRightIcon size={16} />
                   </IconButton>
-                  <IconButton>
+                  <IconButton disabled={page === totalPages} onClick={handleGoToLastPage}>
                     <ChevronsRightIcon size={16} />
                   </IconButton>
                 </div>
